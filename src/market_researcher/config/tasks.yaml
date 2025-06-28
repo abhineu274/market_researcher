@@ -1,27 +1,41 @@
-fetch_bse_data:
-  description: >
-    Fetch the latest stock prices, volumes, and news from the Bombay Stock Exchange website and APIs.
-  expected_output: >
-    A summary of the latest BSE stock prices, volumes, and news headlines.
-  agent: bse_researcher
+# fetch_bse_data:
+#   description: >
+#     Fetch the latest stock prices, volumes, and news from the Bombay Stock Exchange website and APIs.
+#   expected_output: >
+#     A summary of the latest BSE stock prices, volumes, and news headlines.
+#   agent: bse_researcher
 
-analyze_trends:
-  description: >
-    Analyze the fetched BSE data for trends, patterns, and anomalies.
-  expected_output: >
-    A list of identified trends, patterns, and any anomalies in the BSE data.
-  agent: trend_analyst
+# analyze_trends:
+#   description: >
+#     Analyze the fetched BSE data for trends, patterns, and anomalies.
+#   expected_output: >
+#     A list of identified trends, patterns, and any anomalies in the BSE data.
+#   agent: trend_analyst
 
-generate_recommendations:
-  description: >
-    Based on the analysis, generate actionable stock recommendations for Indian investors.
-  expected_output: >
-    A set of buy/sell/hold recommendations for BSE stocks with reasoning.
-  agent: recommendation_engine
+# generate_recommendations:
+#   description: >
+#     Based on the analysis, generate actionable stock recommendations for Indian investors.
+#   expected_output: >
+#     A set of buy/sell/hold recommendations for BSE stocks with reasoning.
+#   agent: recommendation_engine
 
-report_task:
+# report_task:
+#   description: >
+#     Compile a report summarizing findings and recommendations.
+#   expected_output: >
+#     A well-structured report summarizing all findings and recommendations.
+#   agent: bse_researcher
+
+fetch_hindu_news:
   description: >
-    Compile a report summarizing findings and recommendations.
+    Fetch important news headlines from The Hindu for the previous day.
   expected_output: >
-    A well-structured report summarizing all findings and recommendations.
-  agent: bse_researcher
+    A list of top news headlines from The Hindu for yesterday.
+  agent: hindu_researcher
+
+generate_upsc_notes:
+  description: >
+    Create UPSC Prelims, Mains, and Interview notes from the news headlines. Mention the Date as well.
+  expected_output: >
+    Structured notes for Prelims (facts), Mains (analysis), and Interview (discussion points).
+  agent: upsc_notes_writer

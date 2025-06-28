@@ -2,7 +2,7 @@
 import sys
 import warnings
 from datetime import datetime
-from market_researcher.crew import BSEMarketResearcher
+from market_researcher.crew import BSEMarketResearcher, HinduUPSCNotesCrew
 from dotenv import load_dotenv
 import os
 import webbrowser
@@ -67,14 +67,28 @@ def test():
     except Exception as e:
         raise Exception(f"An error occurred while testing the crew: {e}")
 
-def open_report():
+def open_report(path=None):
     # Open the Markdown report in the default browser or viewer
-    report_path = os.path.abspath("bse_report.md")
+    report_path = os.path.abspath(path)
     if os.path.exists(report_path):
         # For HTML: convert and open, for MD: open in browser or editor
         webbrowser.open(f"file://{report_path}")
     else:
         print("Report file not found.")
+
+def run_the_hindu():
+    """Run the Hindu UPSC Notes crew."""
+    inputs = {
+        'topic': 'Hindu News',
+        'current_year': str(datetime.now().year)
+    }
+    try:
+        HinduUPSCNotesCrew().crew().kickoff(inputs=inputs)
+    except Exception as e:
+        raise Exception(f"An error occurred while running the Hindu UPSC Notes crew: {e}")
+
+
+
 
 if __name__ == "__main__":
     if len(sys.argv) < 2:
@@ -83,7 +97,10 @@ if __name__ == "__main__":
     command = sys.argv[1].lower()
     if command == "run":
         run()
-        open_report()
+        open_report("bse_report.md")
+    elif command == "run_hindu":
+        run_the_hindu()
+        open_report("upsc_notes.md")
     elif command == "train":
         train()
     elif command == "replay":

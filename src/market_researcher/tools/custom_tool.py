@@ -90,3 +90,25 @@ class SerperSearchTool(BaseTool):
             return f"No results found for '{query}'."
         except Exception as e:
             return f"Error using Serper.dev: {e}"
+
+class HinduNewsTool(BaseTool):
+    name: str = "The Hindu News Scraper"
+    description: str = "Fetches and summarizes news articles from The Hindu for a given date."
+
+    def _run(self, query: str = ""):
+        import datetime
+        from bs4 import BeautifulSoup
+
+        # Get yesterday's date in YYYY/MM/DD format
+        yesterday = (datetime.datetime.now() - datetime.timedelta(days=1)).strftime("%Y/%m/%d")
+        url = f"https://www.thehindu.com/archive/web/{yesterday}/"
+        try:
+            response = requests.get(url, timeout=20)
+            response.raise_for_status()
+            soup = BeautifulSoup(response.text, "html.parser")
+            # Find all news headlines/links (update selector as needed)
+            articles = soup.find_all("a", class_="archive-list-link")
+            headlines = [a.get_text(strip=True) for a in articles][:10]  # Top 10
+            return "The Hindu headlines for yesterday:\n" + "\n".join(headlines)
+        except Exception as e:
+            return f"Error fetching The Hindu news: {e}"
