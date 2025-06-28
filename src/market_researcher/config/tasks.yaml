@@ -1,0 +1,27 @@
+fetch_bse_data:
+  description: >
+    Fetch the latest stock prices, volumes, and news from the Bombay Stock Exchange website and APIs.
+  expected_output: >
+    A summary of the latest BSE stock prices, volumes, and news headlines.
+  agent: bse_researcher
+
+analyze_trends:
+  description: >
+    Analyze the fetched BSE data for trends, patterns, and anomalies.
+  expected_output: >
+    A list of identified trends, patterns, and any anomalies in the BSE data.
+  agent: trend_analyst
+
+generate_recommendations:
+  description: >
+    Based on the analysis, generate actionable stock recommendations for Indian investors.
+  expected_output: >
+    A set of buy/sell/hold recommendations for BSE stocks with reasoning.
+  agent: recommendation_engine
+
+report_task:
+  description: >
+    Compile a report summarizing findings and recommendations.
+  expected_output: >
+    A well-structured report summarizing all findings and recommendations.
+  agent: bse_researcher
