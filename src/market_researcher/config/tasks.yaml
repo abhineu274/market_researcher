@@ -26,16 +26,31 @@
 #     A well-structured report summarizing all findings and recommendations.
 #   agent: bse_researcher
 
-fetch_hindu_news:
-  description: >
-    Fetch important news headlines from The Hindu for the previous day.
-  expected_output: >
-    A list of top news headlines from The Hindu for yesterday.
-  agent: hindu_researcher
+# fetch_hindu_news:
+#   description: >
+#     Fetch important news headlines from The Hindu for the previous day.
+#   expected_output: >
+#     A list of top news headlines from The Hindu for yesterday.
+#   agent: hindu_researcher
 
-generate_upsc_notes:
+# generate_upsc_notes:
+#   description: >
+#     Create UPSC Prelims, Mains, and Interview notes from the news headlines. Mention the Date as well.
+#   expected_output: >
+#     Structured notes for Prelims (facts), Mains (analysis), and Interview (discussion points).
+#   agent: upsc_notes_writer
+
+extract_pdf_text:
   description: >
-    Create UPSC Prelims, Mains, and Interview notes from the news headlines. Mention the Date as well.
+    Extract all relevant text from the provided PDF file.
+  expected_output: The extracted text from the PDF.
+  agent: mcq_generator
+  input_key: pdf_path
+
+generate_mcqs:
+  description: >
+    Generate MCQs from the extracted PDF text.
   expected_output: >
-    Structured notes for Prelims (facts), Mains (analysis), and Interview (discussion points).
-  agent: upsc_notes_writer
+    A set of high-quality MCQs with options and correct answers.
+  agent: mcq_generator
+  depends_on: extract_pdf_text

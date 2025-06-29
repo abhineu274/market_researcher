@@ -2,7 +2,7 @@
 import sys
 import warnings
 from datetime import datetime
-from market_researcher.crew import BSEMarketResearcher, HinduUPSCNotesCrew
+from market_researcher.crew import BSEMarketResearcher, HinduUPSCNotesCrew, MCQGenerationCrew
 from dotenv import load_dotenv
 import os
 import webbrowser
@@ -21,61 +21,6 @@ def run():
     except Exception as e:
         raise Exception(f"An error occurred while running the crew: {e}")
 
-def train():
-    """Train the crew for a given number of iterations."""
-    if len(sys.argv) < 4:
-        print("Usage: python main.py train <n_iterations> <output_filename>")
-        sys.exit(1)
-    inputs = {
-        "topic": "Bombay Stock Exchange",
-        'current_year': str(datetime.now().year)
-    }
-    try:
-        BSEMarketResearcher().crew().train(
-            n_iterations=int(sys.argv[2]),
-            filename=sys.argv[3],
-            inputs=inputs
-        )
-    except Exception as e:
-        raise Exception(f"An error occurred while training the crew: {e}")
-
-def replay():
-    """Replay the crew execution from a specific task."""
-    if len(sys.argv) < 3:
-        print("Usage: python main.py replay <task_id>")
-        sys.exit(1)
-    try:
-        BSEMarketResearcher().crew().replay(task_id=sys.argv[2])
-    except Exception as e:
-        raise Exception(f"An error occurred while replaying the crew: {e}")
-
-def test():
-    """Test the crew execution and returns the results."""
-    if len(sys.argv) < 4:
-        print("Usage: python main.py test <n_iterations> <eval_llm>")
-        sys.exit(1)
-    inputs = {
-        "topic": "Bombay Stock Exchange",
-        "current_year": str(datetime.now().year)
-    }
-    try:
-        BSEMarketResearcher().crew().test(
-            n_iterations=int(sys.argv[2]),
-            eval_llm=sys.argv[3],
-            inputs=inputs
-        )
-    except Exception as e:
-        raise Exception(f"An error occurred while testing the crew: {e}")
-
-def open_report(path=None):
-    # Open the Markdown report in the default browser or viewer
-    report_path = os.path.abspath(path)
-    if os.path.exists(report_path):
-        # For HTML: convert and open, for MD: open in browser or editor
-        webbrowser.open(f"file://{report_path}")
-    else:
-        print("Report file not found.")
-
 def run_the_hindu():
     """Run the Hindu UPSC Notes crew."""
     inputs = {
@@ -86,8 +31,25 @@ def run_the_hindu():
         HinduUPSCNotesCrew().crew().kickoff(inputs=inputs)
     except Exception as e:
         raise Exception(f"An error occurred while running the Hindu UPSC Notes crew: {e}")
+    
+def run_mcqg():
+    """Run the MCQ Generator crew."""
+    inputs = {
+        "pdf_path" : r"knowledge\PolityNotes.pdf"
+    }
+    try:
+        MCQGenerationCrew().crew().kickoff(inputs=inputs)
+    except ImportError:
+        raise ImportError("MCQ Generation crew is not implemented yet. Please implement it in the crew.py file.")
 
-
+def open_report(path=None):
+    # Open the Markdown report in the default browser or viewer
+    report_path = os.path.abspath(path)
+    if os.path.exists(report_path):
+        # For HTML: convert and open, for MD: open in browser or editor
+        webbrowser.open(f"file://{report_path}")
+    else:
+        print("Report file not found.")
 
 
 if __name__ == "__main__":
@@ -101,12 +63,9 @@ if __name__ == "__main__":
     elif command == "run_hindu":
         run_the_hindu()
         open_report("upsc_notes.md")
-    elif command == "train":
-        train()
-    elif command == "replay":
-        replay()
-    elif command == "test":
-        test()
+    elif command == "run_mcqg":
+        run_mcqg()
+        open_report("mcqs.md")
     else:
         print(f"Unknown command: {command}")
         print("Usage: python main.py [run|train|replay|test] ...")

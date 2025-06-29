@@ -2,6 +2,7 @@ from crewai.tools import BaseTool
 import requests
 import os
 from bs4 import BeautifulSoup
+import PyPDF2
 
 # Define a minimal WebScraperTool if not available from an import
 class WebScraperTool(BaseTool):
@@ -112,3 +113,25 @@ class HinduNewsTool(BaseTool):
             return "The Hindu headlines for yesterday:\n" + "\n".join(headlines)
         except Exception as e:
             return f"Error fetching The Hindu news: {e}"
+        
+class PDFTextExtractorTool(BaseTool):
+    name: str = "PDF Text Extractor"
+    description: str = "Extracts text from a provided PDF file path."
+
+    def _run(self, pdf_path: str):
+        print(f"[DEBUG] PDFTextExtractorTool received pdf_path: {pdf_path}")
+        try:
+            if not os.path.exists(pdf_path):
+                print(f"[DEBUG] File does not exist at: {pdf_path}")
+            with open(r"knowledge\PolityNotes.pdf", "rb") as f:
+                reader = PyPDF2.PdfReader(f)
+                text = ""
+                for page in reader.pages:
+                    text += page.extract_text() or ""
+            # Split text into chunks of 4000 characters
+            chunk_size = 4000
+            chunks = [text[i:i+chunk_size] for i in range(0, 10000, chunk_size)]
+            return chunks
+        except Exception as e:
+            print(f"[DEBUG] Exception: {e}")
+            return [f"Error extracting text from PDF: {e}"]
